@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="160" viewBox="0 0 720 160" role="img" aria-label="Anfààní door logo, dark">
+  <title>Anfààní, door, dark</title>
+  <g fill="none" stroke="#818CF8" stroke-width="12" stroke-linecap="round">
+    <path d="M28 132 V62 Q28 28 72 28 Q116 28 116 62 V132"/>
+  </g>
+  <path fill="#818CF8" d="M72 132 V48 L100 60 V132 Z"/>
+  <circle cx="91" cy="96" r="5" fill="#0B0B10"/>
+  <text x="148" y="108" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="800" letter-spacing="-2" fill="#FFFFFF">anfààní</text>
+</svg>

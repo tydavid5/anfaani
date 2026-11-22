@@ -1,0 +1,7 @@
+# Anfààní repo (tydavid5/anfaani). One repo for the whole project.
+node_modules/
+.env
+backend/data/alerts.json
+backend/data/reports.json
+backend/data/saved.json
+.DS_Store
