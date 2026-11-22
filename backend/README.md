@@ -141,20 +141,15 @@ Copy `.env.example` to `.env` for local use. Never commit a real `.env`.
 
 ## Deploy
 
-No deployment exists yet. To deploy, after the repo is created on GitHub:
-
-1. Push the whole `job-platform` folder as the GitHub repo
-   `tydavid5/anfaani`, one repo for the whole project, not a separate
-   backend repo. The repo is named `anfaani`, one repo for the whole project.
-2. Import it in Vercel, set the Root Directory to `backend`, framework
-   preset: Other, build command empty, output directory empty. Vercel maps
-   `backend/api/index.js` to the API.
-3. Set `RESEND_API_KEY` and `FROM_EMAIL` in Vercel only if you want real
-   alert emails. Without them, alerts register but no email is sent, and
-   the API says so plainly.
-4. The GitHub Actions fetch workflow needs the repo's default
-   `GITHUB_TOKEN` with contents write permission, which it already has
-   in the workflow file. It commits `backend/data/jobs.json` 4 times a day.
+Live since Nov 22 2026: https://anfaani-amber.vercel.app, Vercel project
+`tydavid5/anfaani`, Root Directory `backend`, connected to the GitHub repo
+`tydavid5/anfaani`, so pushes to main redeploy it. Vercel maps each file in
+`backend/api/` to its endpoint: `health.js`, `jobs.js`, `alerts.js`,
+`reports.js`, `saved.js`, all reusing the same handler in `src/server.js`.
+The first deploy used a legacy `builds` config with a single `api/index.js`
+and returned 404 on every endpoint, so that file was deleted and replaced
+with one file per endpoint. Do not bring back `api/index.js` or a
+`builds` entry in `vercel.json`.
 
 No domain yet. Domain buying is deferred to Dec 2026. Vercel gives a
 `.vercel.app` URL until then.
