@@ -62,5 +62,6 @@ export async function writeData(name, value) {
     access: "private",
     contentType: "application/json",
     addRandomSuffix: false,
+    allowOverwrite: true,
   });
 }
