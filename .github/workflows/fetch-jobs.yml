@@ -1,0 +1,43 @@
+# Anfààní live job fetch. Runs 4 times a day, because Vercel Hobby cron
+# is limited to once a day, and the agreed plan is 3 to 5 fetches a day.
+# It fetches only open, keyless feeds (RemoteOK, Arbeitnow, Jobicy,
+# Remotive, WeWorkRemotely, Greenhouse boards listed in companies.json).
+# It never calls JSearch, SerpApi or JobsPipe, which are capped and keyed.
+# The updated backend/data/jobs.json is committed back to the repo, so the
+# API and the site read the saved copy instead of hitting the feeds per user.
+# This workflow lives at the repo root because GitHub Actions only runs
+# workflows from .github/workflows at the root. The repo is tydavid5/anfaani,
+# one repo for the whole project, with the backend in backend/.
+name: Fetch live jobs
+
+on:
+  schedule:
+    - cron: "0 2,8,14,20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch jobs
+        working-directory: backend
+        run: node src/fetch-jobs.js
+
+      - name: Commit updated jobs
+        run: |
+          git config user.name "anfaani-fetch-bot"
+          git config user.email "fetch-bot@anfaani.example"
+          git add backend/data/jobs.json
+          git diff --cached --quiet || git commit -m "Update cached jobs"
+          git push
