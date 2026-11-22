@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="fyndr app icon">
+  <title>fyndr</title>
+  <rect width="512" height="512" rx="112" fill="#4F46E5"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round">
+    <circle cx="216" cy="216" r="118"/>
+    <line x1="300" y1="300" x2="392" y2="392"/>
+  </g>
+  <path fill="#FFFFFF" d="M216 136c-38 0-64 26-64 62 0 46 64 104 64 104s64-58 64-104c0-36-26-62-64-62zm0 82a20 20 0 1 1 0-40 20 20 0 0 1 0 40z"/>
+</svg>
