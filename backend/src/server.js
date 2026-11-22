@@ -74,7 +74,7 @@ export function createHandler() {
         const data = readJobs();
         return sendJson(res, 200, {
           ok: true,
-          service: "anfaani-backend",
+          service: "anfaani",
           jobs: data.total || 0,
           fetched_at: data.fetched_at || null,
           email_configured: emailConfigured(),

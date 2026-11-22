@@ -1,6 +1,6 @@
 # Anfààní backend
 
-Backend for Anfààní, a global job search platform, Nigeria first, with 52 fields.
+Backend for Anfààní, a job search platform, Nigeria first, global by design, with 52 fields.
 It fetches open job feeds, caches them, and serves a small JSON API for jobs,
 alerts, reports and saved jobs.
 
@@ -145,7 +145,7 @@ No deployment exists yet. To deploy, after the repo is created on GitHub:
 
 1. Push the whole `job-platform` folder as the GitHub repo
    `tydavid5/anfaani`, one repo for the whole project, not a separate
-   backend repo. Do not name the repo `anfaani-backend`.
+   backend repo. The repo is named `anfaani`, one repo for the whole project.
 2. Import it in Vercel, set the Root Directory to `backend`, framework
    preset: Other, build command empty, output directory empty. Vercel maps
    `backend/api/index.js` to the API.

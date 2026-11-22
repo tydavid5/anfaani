@@ -5,3 +5,4 @@ backend/data/alerts.json
 backend/data/reports.json
 backend/data/saved.json
 .DS_Store
+archive/
