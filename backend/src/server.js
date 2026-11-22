@@ -3,7 +3,7 @@
 // Env: PORT (default 3000), DATA_DIR, RESEND_API_KEY, FROM_EMAIL.
 
 import { createServer } from "node:http";
-import { readJobs, readJson, writeJson } from "./store.js";
+import { readJobs, readData, writeData } from "./store.js";
 import { emailConfigured } from "./email.js";
 
 const PORT = Number(process.env.PORT || 3000);
@@ -104,7 +104,7 @@ export function createHandler() {
         if (!body.field || typeof body.field !== "string") {
           return sendJson(res, 400, { ok: false, error: "field is required" });
         }
-        const alerts = readJson("alerts.json", []);
+        const alerts = await readData("alerts.json", []);
         const alert = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           email: body.email.toLowerCase(),
@@ -115,7 +115,7 @@ export function createHandler() {
           created_at: new Date().toISOString(),
         };
         alerts.push(alert);
-        writeJson("alerts.json", alerts);
+        await writeData("alerts.json", alerts);
         // Honest: registration is stored, no email is sent here. Real
         // emails only go out via src/send-alerts.js when a Resend key is set.
         return sendJson(res, 201, {
@@ -133,7 +133,7 @@ export function createHandler() {
         if (!REPORT_REASONS.includes(body.reason)) {
           return sendJson(res, 400, { ok: false, error: `reason must be one of: ${REPORT_REASONS.join(", ")}` });
         }
-        const reports = readJson("reports.json", []);
+        const reports = await readData("reports.json", []);
         const report = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           job_id: body.job_id,
@@ -142,14 +142,14 @@ export function createHandler() {
           created_at: new Date().toISOString(),
         };
         reports.push(report);
-        writeJson("reports.json", reports);
+        await writeData("reports.json", reports);
         return sendJson(res, 201, { ok: true, report });
       }
 
       if (req.method === "GET" && path === "/api/saved") {
         const key = keyFor(Object.fromEntries(url.searchParams));
         if (!key) return sendJson(res, 400, { ok: false, error: "email or device_id is required" });
-        const saved = readJson("saved.json", {});
+        const saved = await readData("saved.json", {});
         const ids = saved[key] || [];
         const data = readJobs();
         const jobs = (data.jobs || []).filter((j) => ids.includes(j.id));
@@ -163,12 +163,12 @@ export function createHandler() {
         if (!body.job_id || typeof body.job_id !== "string") {
           return sendJson(res, 400, { ok: false, error: "job_id is required" });
         }
-        const saved = readJson("saved.json", {});
+        const saved = await readData("saved.json", {});
         const ids = new Set(saved[key] || []);
         if (body.action === "remove") ids.delete(body.job_id);
         else ids.add(body.job_id);
         saved[key] = [...ids];
-        writeJson("saved.json", saved);
+        await writeData("saved.json", saved);
         return sendJson(res, 200, { ok: true, key, job_ids: saved[key] });
       }
 

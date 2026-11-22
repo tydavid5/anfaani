@@ -161,9 +161,10 @@ No domain yet. Domain buying is deferred to Dec 2026. Vercel gives a
   Alert registration works without it, it just stores the registration.
 - **No JSearch, SerpApi or JobsPipe key.** Those aggregators are not
   called. Add them only with a key and a sparing schedule, never daily.
-- **No durable user data on Vercel.** Alerts, reports and saved jobs are
-  JSON files and do not persist reliably on serverless. Move them to
-  Vercel KV or Postgres before relying on them in production.
+- **Written data now persists on Vercel.** Alerts, reports and saved jobs
+  live in a private Vercel Blob store, `anfaani-data`, connected to the
+  project with OIDC, no long-lived key. Locally, with no Blob store
+  connected, they fall back to JSON files in `data/`.
 - **No domain yet.** Deferred to Dec 2026, about $11 a year for a .com.
 - **No auth.** Saved jobs are keyed by email or device id, not by a
   logged in account. Anyone with the same key can read that list.
