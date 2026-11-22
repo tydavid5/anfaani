@@ -3,7 +3,7 @@
 // No-op when RESEND_API_KEY or FROM_EMAIL is not set. Nothing is ever
 // claimed as sent when it was not.
 
-import { readJobs, readJson } from "./store.js";
+import { readJobs, readData } from "./store.js";
 import { sendEmail, emailConfigured } from "./email.js";
 
 function matches(job, alert) {
@@ -23,7 +23,7 @@ async function main() {
     return;
   }
   const data = readJobs();
-  const alerts = readJson("alerts.json", []);
+  const alerts = await readData("alerts.json", []);
   if (alerts.length === 0) {
     console.log("No alert registrations. Nothing sent.");
     return;

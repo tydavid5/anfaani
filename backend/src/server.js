@@ -4,6 +4,7 @@
 
 import { createServer } from "node:http";
 import { readJobs, readData, writeData } from "./store.js";
+import { sendEmail } from "./email.js";
 import { emailConfigured } from "./email.js";
 
 const PORT = Number(process.env.PORT || 3000);
@@ -116,12 +117,20 @@ export function createHandler() {
         };
         alerts.push(alert);
         await writeData("alerts.json", alerts);
+        // Welcome email, best effort. Registration succeeds even if the
+        // email fails, the caller is told plainly whether it was sent.
+        const welcome = await sendEmail({
+          to: alert.email,
+          subject: "Anfààní: your job alert is on",
+          text: `You signed up for job alerts on Anfààní for ${alert.field}, location ${alert.location}, mode ${alert.mode}.\n\nWe will email you when new jobs match. You can delete this alert in the app at any time.`,
+        }).catch(() => ({ sent: false, reason: "send_failed" }));
         // Honest: registration is stored, no email is sent here. Real
         // emails only go out via src/send-alerts.js when a Resend key is set.
         return sendJson(res, 201, {
           ok: true,
           alert,
           email_sending: emailConfigured() ? "configured" : "not_configured",
+          welcome_email_sent: welcome.sent === true,
         });
       }
 
